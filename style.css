@@ -1,0 +1,553 @@
+/* ================= المتغيرات العامة ================= */
+:root {
+    --bg-main: #f8f5f1;
+    --bg-gradient: linear-gradient(135deg, #f8f5f1 0%, #efe5d5 100%);
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --white: #ffffff;
+    --gold: #c8a96a;
+    --gold-dark: #a98546;
+    --gold-light: #ebd6b4;
+    --text-primary: #4d433d;
+    --text-secondary: #777777;
+    --border-gold: rgba(200, 169, 106, 0.35);
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.06);
+    --radius: 20px;
+}
+
+/* إعدادات عامة */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    background: var(--bg-gradient);
+    color: var(--text-primary);
+    font-family: 'Playfair Display', 'Cairo', serif;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* تصميم الستارة (لا تغيير على الخلفية) */
+.curtain-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.curtain-half {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background-image: url('https://i.postimg.cc/YSPhps5P/774ee7b8-9a6a-44c6-a173-36776a9984b1.jpg');
+    background-size: 200% 100%;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.3);
+    transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.left-curtain { left: 0; background-position: left center; }
+.right-curtain { right: 0; background-position: right center; }
+
+.curtain-container.opened .left-curtain { transform: translateX(-100%); }
+.curtain-container.opened .right-curtain { transform: translateX(100%); }
+.curtain-container.opened .open-btn {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.5);
+}
+
+/* زر الستارة */
+.open-btn {
+    position: relative;
+    z-index: 1000;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border: 2px dashed var(--gold);
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.4s ease;
+}
+
+.open-btn:hover {
+    transform: scale(1.06);
+    background: var(--white);
+}
+
+.open-btn .heart {
+    font-size: 24px;
+    color: #d99a9a;
+    margin-bottom: 4px;
+}
+
+.open-btn .btn-text {
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: var(--gold-dark);
+}
+
+/* زر الموسيقى الطاير */
+#music-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 1001;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    border: 1.5px solid var(--gold);
+    color: var(--gold-dark);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s ease;
+}
+
+#music-btn:hover, #music-btn.playing {
+    background: var(--gold);
+    color: var(--white);
+}
+
+#music-btn.playing {
+    animation: rotateMusic 4s linear infinite;
+}
+
+@keyframes rotateMusic {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ================= تحديد العرض الملموم (مش 100%) ================= */
+/* بنحدد كل الأقسام والمحتوى بعرض 82% وبحد أقصى 420px */
+.main-content,
+section,
+.hero-section,
+.countdown-section,
+.details-section,
+.map-section,
+.program-section,
+.faq-section {
+    width: 82% !important;
+    max-width: 420px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.main-content {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1.2s ease-out;
+    padding-top: 20px;
+    padding-bottom: 70px;
+    text-align: center;
+}
+
+.main-content.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* الهيدر */
+.hero-section {
+    padding-top: 50px;
+    padding-bottom: 30px;
+    text-align: center;
+}
+
+.couple-names {
+    font-size: clamp(2.2rem, 7vw, 3.2rem);
+    font-style: italic;
+    color: var(--gold-dark);
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.date-text {
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.hotel-text {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.scroll-down {
+    color: var(--gold-dark);
+    font-size: 1.6rem;
+    margin-top: 15px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-7px); }
+    60% { transform: translateY(-3px); }
+}
+
+.save-date-btn {
+    background: var(--gold);
+    border: none;
+    color: var(--white);
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(200, 169, 106, 0.3);
+    transition: all 0.3s ease;
+}
+
+.save-date-btn:hover {
+    background: var(--gold-dark);
+    transform: translateY(-2px);
+}
+
+/* العداد التنازلي */
+.countdown-section {
+    padding: 40px 0 30px 0;
+    border-top: 1px solid var(--border-gold);
+    text-align: center;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    color: var(--gold-dark);
+    letter-spacing: 2.5px;
+    margin-bottom: 6px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.subtitle {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    font-style: italic;
+    text-align: center;
+}
+
+.timer-container {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.timer-box {
+    background: var(--white);
+    border: 1px solid var(--border-gold);
+    padding: 12px 4px;
+    flex: 1;
+    border-radius: 14px;
+    box-shadow: var(--shadow-soft);
+}
+
+.timer-box span {
+    font-size: 1.4rem;
+    display: block;
+    color: var(--gold-dark);
+    font-weight: bold;
+    line-height: 1.1;
+}
+
+.timer-box p {
+    font-size: 0.68rem;
+    margin-top: 4px;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+/* ================= الكروت (ملمومة بالكامل) ================= */
+.location-card, .timeline, .accordion, .details-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-gold);
+    border-radius: var(--radius);
+    padding: 22px 16px;
+    margin: 18px auto;
+    width: 100%;
+    box-shadow: var(--shadow-soft);
+}
+
+/* قسم Details of the day - مسافات واضحة ومنع الالتصاق */
+.details-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.details-card h3 {
+    color: var(--gold-dark);
+    font-size: 1.05rem;
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+.details-card p {
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* كارت القاعة */
+.hall-image {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border-gold);
+}
+
+.location-card h3 {
+    color: var(--gold-dark);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.location-card > p {
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.location-list {
+    list-style: none;
+    text-align: left;
+    width: 100%;
+    max-width: 260px;
+    margin: 12px auto 0 auto;
+    border-top: 1px dashed var(--border-gold);
+    padding-top: 12px;
+}
+
+.location-list li {
+    margin-bottom: 8px;
+    font-size: 0.88rem;
+    color: var(--text-primary);
+}
+
+/* الأكورديون (الأسئلة الشائعة) */
+.faq-section, .details-section {
+    margin-top: 35px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-gold);
+}
+
+.accordion {
+    text-align: left;
+    padding: 10px 14px;
+}
+
+.accordion-item {
+    border-bottom: 1px solid rgba(200, 169, 106, 0.2);
+}
+
+.accordion-item:last-child {
+    border-bottom: none;
+}
+
+.accordion-header {
+    background: none;
+    border: none;
+    width: 100%;
+    color: var(--text-primary);
+    padding: 14px 4px;
+    text-align: left;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: inherit;
+}
+
+.accordion-header span {
+    color: var(--gold);
+    font-size: 1.15rem;
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    padding: 0 4px;
+}
+
+.accordion-content p {
+    padding-bottom: 14px;
+    color: var(--text-secondary);
+    font-size: 0.86rem;
+    line-height: 1.6;
+}
+
+/* كارت الخريطة */
+.map-section {
+    margin-top: 35px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-gold);
+}
+
+.map-wrapper-link {
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    margin: 16px auto;
+    box-shadow: var(--shadow-soft);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.map-wrapper-link:hover {
+    transform: translateY(-2px);
+}
+
+.map-card-container {
+    position: relative;
+    height: 180px;
+}
+
+.static-map-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.inline-map-btn {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--white);
+    color: var(--text-primary);
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 5px 12px;
+    border-radius: 50px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+.map-btn-wide {
+    background: var(--gold);
+    color: var(--white);
+    text-align: center;
+    padding: 13px;
+    font-weight: bold;
+    font-size: 0.88rem;
+    letter-spacing: 1px;
+}
+
+/* ================= برنامج اليوم (التايم لاين والنجوم جوة الكارت) ================= */
+.program-section {
+    margin-top: 35px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-gold);
+}
+
+.timeline {
+    position: relative;
+    padding: 24px 16px 20px 58px; /* مسافة أمان مريحة للنجوم */
+    text-align: left;
+    border-left: none;
+}
+
+/* خط التايم لاين الداخلي */
+.timeline::before {
+    content: "";
+    position: absolute;
+    left: 32px;
+    top: 28px;
+    bottom: 28px;
+    width: 2px;
+    background: var(--gold-light);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 26px;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+/* مكان النجمة: سنتر على الخط الداخلي تماماً ومش على طرف الكارت */
+.timeline-icon {
+    position: absolute;
+    left: -40px;
+    top: 2px;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    border: 2px solid var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+
+.timeline-content h4 {
+    color: var(--gold-dark);
+    letter-spacing: 1.5px;
+    margin-bottom: 2px;
+    font-size: 0.98rem;
+}
+
+.timeline-content .time {
+    font-weight: bold;
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 3px;
+    font-size: 0.88rem;
+}
+
+.timeline-content p {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+}
